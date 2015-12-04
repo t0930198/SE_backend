@@ -1,7 +1,5 @@
 package ntut.csie.lab1321.softwareEngineer.model;
 
-import ntut.csie.lab1321.softwareEngineer.dao.AccountDAO;
-
 public class Account {
 	
 	private int mId = -1;

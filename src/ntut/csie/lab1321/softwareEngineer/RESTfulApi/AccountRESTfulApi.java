@@ -33,12 +33,32 @@ public class AccountRESTfulApi {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createAccount(String entity){
 		JSONObject json = new JSONObject(entity);
-		Account account = new Account(json.getString("username"));
+		Account account = AccountDAO.getInstance().getAccountByName(json.getString("username"));
+		if(account != null){
+			JSONObject response = new JSONObject();
+			response.put("message", "ACCOUNT EXISTED");
+			response.put("status_code", 1);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
+		}
+		account = new Account(json.getString("username"));
 		account.setmEmail(json.getString("email"));
 		account.setmPassword(json.getString("password"));
-		AccountDAO.getInstance().creatAccount(account);
+		boolean status = AccountDAO.getInstance().creatAccount(account);
+		if(status){
+			JSONObject response = new JSONObject();
+			response.put("message", "Create Account");
+			response.put("status_code", 3);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.OK).entity(entityResponse).build();
+		} else {
+			JSONObject response = new JSONObject();
+			response.put("message", "Create Account Fail");
+			response.put("status_code", 2);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(entityResponse).build();
+		}
 		
-		return Response.status(Response.Status.OK).entity("GET").build();
 	}
 	
 	@GET

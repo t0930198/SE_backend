@@ -75,7 +75,41 @@ public class AccountDAO {
 
 		return updateStatus;
 	}
-
+	public Account getAccountByName(String name){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		Account account = null;
+		try{
+			con = DBConnector.connectToMySQL();
+			stm = con.createStatement();
+			rs = stm.executeQuery("SELECT * FROM user WHERE account =" + "'" + name + "'");
+			if (rs.next()) {
+				account = new Account(name);
+				account.setmUsername(rs.getString("id"));
+				account.setmPassword(rs.getString("password"));
+				account.setmEmail(rs.getString("email"));
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return account;
+	}
+	
 	public Account getAccountById(int id) {
 		Connection con = null;
 		Statement stm = null;
