@@ -18,14 +18,16 @@ public class RequirementDAO {
 		return mInstance;
 	}
 	public boolean creatRequirement(Requirement requirement){
+		
 		Connection con = null;
 		PreparedStatement pstm = null;
 		try{
+			long currentTime = System.currentTimeMillis();
 			con = DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO requirement SET name=?, description=?, command=?");
+			pstm = con.prepareStatement("INSERT INTO requirement SET name=?, description=?, star_time=?");
 			pstm.setString(1, requirement.getmReqirename());
 			pstm.setString(2, requirement.getmReqiredescription());
-			pstm.setString(4, requirement.getmReqirecommand());
+			pstm.setLong(3, currentTime);
 			pstm.execute();
 			pstm.close();
 			return true;
@@ -106,6 +108,18 @@ public class RequirementDAO {
 			}
 		}
 		return requirement;
+	}
+	public boolean delete(int id){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		Requirement requirement = null;
+		try{
+			con = DBConnector.connectToMySQL();
+			stm = con.createStatement();
+			"DELETE FROM inventory WHERE ItemCode = '"+id+"' 
+		}
+		return false;
 	}
 }
 

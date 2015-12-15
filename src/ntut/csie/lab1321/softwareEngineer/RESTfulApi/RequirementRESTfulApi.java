@@ -14,12 +14,12 @@ import ntut.csie.lab1321.softwareEngineer.json.JSONException;
 import ntut.csie.lab1321.softwareEngineer.json.JSONObject;
 import ntut.csie.lab1321.softwareEngineer.model.Requirement;
 
-@Path("requirement")
+@Path("requirements")
 public class RequirementRESTfulApi {
 //	@GET
 //	@Produces(MediaType.APPLICATION_JSON)
 //	public Response getRequirements(){
-//		
+//		//TODO
 //	}
 
 	@POST
