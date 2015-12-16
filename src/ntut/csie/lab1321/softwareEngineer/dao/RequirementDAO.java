@@ -50,7 +50,7 @@ public class RequirementDAO {
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, command=?");
+			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, command=? WHERE id =?");
 			pstm.setString(1, requirement.getmReqirename());
 			pstm.setString(2, requirement.getmReqiredescription());
 			pstm.setString(3, requirement.getmReqirecommand());
@@ -110,14 +110,38 @@ public class RequirementDAO {
 		return requirement;
 	}
 	public boolean delete(int id){
+
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
-		Requirement requirement = null;
+
+		con = DBConnector.connectToMySQL();
+
 		try{
-			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			"DELETE FROM inventory WHERE ItemCode = '"+id+"' 
+			rs = stm.executeQuery("DELETE FROM requirement WHERE id = '"+id+"'");
+			if(rs.rowDeleted())
+				return true;
+			else 
+				return false;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}

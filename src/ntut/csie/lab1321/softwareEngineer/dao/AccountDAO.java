@@ -21,7 +21,7 @@ public class AccountDAO {
 
 	public boolean creatAccount(Account account) {
 		Connection con = null;
-		PreparedStatement pstm = null;j
+		PreparedStatement pstm = null;
 		try {
 			con = DBConnector.connectToMySQL();
 			pstm = con.prepareStatement("INSERT INTO user SET account=?, password=?, email=?");
