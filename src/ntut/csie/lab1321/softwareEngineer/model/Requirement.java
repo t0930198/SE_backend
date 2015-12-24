@@ -2,54 +2,54 @@ package ntut.csie.lab1321.softwareEngineer.model;
 
 public class Requirement {
 	private int mId = -1;
-	private String mRequireName = "";
-	private String mRequireDescription = "";
-	private long mRequireStartime = -1;
-	private String mRequireCommand = "";
-	private String mRequireStatus = "";
+	private String mRequirementName = "";
+	private String mRequirementDescription = "";
+	private long mRequirementStartTime = -1;
+	private String mRequirementCommand = "";
+	private String mRequirementType = "";
 	
-	public String getmRequireStatus() {
-		return mRequireStatus;
+	public String getRequirementType() {
+		return mRequirementType;
 	}
-	public void setmRequireStatus(String mRequireStatus) {
-		this.mRequireStatus = mRequireStatus;
+	public void setRequireType(String type) {
+		this.mRequirementType = type;
 	}
 	public Requirement(int id){
 		mId = id;
 	}
 	public Requirement(String name){
-		mRequireName = name;
+		mRequirementName = name;
 	}
 	public int getId(){
 		return mId;
 	}
-	public void setmId(int mrId){
-		this.mId = mrId;		
+	public void setId(int id){
+		this.mId = id;		
 	}
-	public String getmReqirename(){
-		return mRequireName;
+	public String getRequirementName(){
+		return mRequirementName;
 	}
-	public void setmReqirename(String mreqirename){
-		this.mRequireName = mreqirename;		
+	public void setRequirementName(String name){
+		this.mRequirementName = name;		
 	}
-	public String getmReqiredescription(){
-		return mRequireDescription;
+	public String getRequirementDescription(){
+		return mRequirementDescription;
 	}
-	public void setmReqiredescription(String reqiredescription){
-		this.mRequireDescription = reqiredescription;		
+	public void setRequirementDescription(String description){
+		this.mRequirementDescription = description;		
 	}
-	public long getmReqirestartime(){
+	public long getRequirementStartTime(){
 
-		return mRequireStartime;
+		return mRequirementStartTime;
 	}
-	public void setmReqirestartime(long reqirestartime){
-		this.mRequireStartime = reqirestartime;		
+	public void setRequirementStartTime(long startTime){
+		this.mRequirementStartTime = startTime;		
 	}
-	public String getmReqirecommand(){
-		return mRequireCommand;
+	public String getRequirementCommand(){
+		return mRequirementCommand;
 	}
 	
-	public void setmReqirecommand(String reqirecommand){
-		this.mRequireCommand = reqirecommand;		
+	public void setmRequirementCommand(String command){
+		this.mRequirementCommand = command;		
 	}
 }

@@ -19,7 +19,7 @@ public class AccountDAO {
 		return mInstance;
 	}
 
-	public boolean creatAccount(Account account) {
+	public boolean createAccount(Account account) {
 		Connection con = null;
 		PreparedStatement pstm = null;
 		try {

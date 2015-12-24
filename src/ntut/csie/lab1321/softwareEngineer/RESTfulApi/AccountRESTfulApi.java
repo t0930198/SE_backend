@@ -44,7 +44,7 @@ public class AccountRESTfulApi {
 		account = new Account(json.getString("username"));
 		account.setmEmail(json.getString("email"));
 		account.setmPassword(json.getString("password"));
-		boolean status = AccountDAO.getInstance().creatAccount(account);
+		boolean status = AccountDAO.getInstance().createAccount(account);
 		if(status){
 			JSONObject response = new JSONObject();
 			response.put("message", "Create Account");
