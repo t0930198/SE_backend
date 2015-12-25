@@ -104,5 +104,39 @@ public class ProjectDAO {
 		}
 		return project;
 	}
+	public boolean delete(int id){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		con = DBConnector.connectToMySQL();
+
+		try{
+			stm = con.createStatement();
+			rs = stm.executeQuery("DELETE FROM project WHERE id = '"+id+"'");
+			if(rs.rowDeleted())
+				return true;
+			else 
+				return false;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 	
 }

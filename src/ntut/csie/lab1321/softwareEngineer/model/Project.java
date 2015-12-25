@@ -13,11 +13,11 @@ public class Project {
     	mId = id;
     }
     
-	public int getmId() {
+	public int getId() {
 		return mId;
 	}
-	public void setmId(int mId) {
-		this.mId = mId;
+	public void setId(int id) {
+		this.mId = id;
 	}
 	public String getName() {
 		return mName;
