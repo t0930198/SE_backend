@@ -6,6 +6,13 @@ public class Test {
 	private String mTestDescription = "";
 	private int mTestRid = -1;
 	
+	
+	public Test(int id) {
+		mId = id;
+	}
+	public Test(String name){
+		mTestName = name;
+	}
 	public int getTestId(){
 		return mId;
 	}
@@ -17,20 +24,20 @@ public class Test {
 		return mTestName;
 	}
 	public void setTestName(String name){
-		this.mTestName = name;
+		mTestName = name;
 	}
 	
 	public String getTestDescription(){
 		return mTestDescription;
 	}
 	public void setTestDescription(String description){
-		this.mTestDescription = description;
+		mTestDescription = description;
 	}
 	
 	public int getTestRid(){
 		return mTestRid;
 	}
 	public void setTestRid(int rid){
-		this.mTestRid = rid;
+		mTestRid = rid;
 	}
 }
