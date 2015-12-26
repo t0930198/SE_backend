@@ -1,16 +1,15 @@
 package ntut.csie.lab1321.softwareEngineer.RESTfulApi;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import ntut.csie.lab1321.softwareEngineer.dao.ProjectDAO;
-import ntut.csie.lab1321.softwareEngineer.model.Project;
-import ntut.csie.lab1321.softwareEngineer.json.JSONException;
 import ntut.csie.lab1321.softwareEngineer.json.JSONObject;
+import ntut.csie.lab1321.softwareEngineer.model.Project;
 
 @Path("projects")
 public class ProjectRESTApi {
@@ -18,10 +17,31 @@ public class ProjectRESTApi {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createProject(String entity){
 		JSONObject json = new JSONObject(entity);
-		Project project = new Project(json.getInt("id"),json.getString("name"));
+		Project project = ProjectDAO.getInstance().getProjectByName(json.getString("name"));
+		if(project != null){
+			JSONObject response = new JSONObject();
+			response.put("message", "PROJECT EXISTED");
+			response.put("status_code", 1);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
+		}
+		project = new Project(json.getString("name"));
 		project.setNote(json.getString("notes"));
-		ProjectDAO.getInstance().createProject(project);
-		return Response.status(Response.Status.OK).entity("GET").build();
+		boolean status = ProjectDAO.getInstance().createProject(project);
+		if(status){
+			JSONObject response = new JSONObject();
+			response.put("message", "Create Account");
+			response.put("status_code", 3);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.OK).entity(entityResponse).build();
+		}
+		else{
+			JSONObject response = new JSONObject();
+			response.put("message", "Create Account Fail");
+			response.put("status_code", 2);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(entityResponse).build();
+		}
 	}
 
 	@GET

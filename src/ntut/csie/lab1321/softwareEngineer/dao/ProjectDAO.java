@@ -70,6 +70,40 @@ public class ProjectDAO {
 		}
 		return updateStatus;
 	}
+	public Project getProjectByName(String name){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		Project project = null;
+		try{
+			con = DBConnector.connectToMySQL();
+			stm = con.createStatement();
+			rs = stm.executeQuery("SELECT * FROM project WHERE name =" + "'" + name + "'");
+			if(rs.next()){
+				project = new Project(name);
+				project.setName(rs.getString("name"));
+				project.setNote(rs.getString("notes"));
+				
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return project;
+	}
 	public Project getProjectById(int id){
 		Connection con = null;
 		Statement stm = null;

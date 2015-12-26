@@ -8,13 +8,13 @@ public class Project {
     public Project(int id){
     	mId = id;
     }
-    public Project(int id, String projectName){
-    	mName = projectName;
+    public Project(int id, String name){
+    	mName = name;
     	mId = id;
     }
-    public Project(String projectName){
-    	if(mName != null && mName != ""){
-    		mName = projectName;
+    public Project(String name){
+    	if(name != null && name != ""){
+    		mName = name;
 		}else {
 			throw new RuntimeException();
 		}
