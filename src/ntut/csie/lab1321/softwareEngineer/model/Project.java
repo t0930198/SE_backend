@@ -12,7 +12,13 @@ public class Project {
     	mName = projectName;
     	mId = id;
     }
-    
+    public Project(String projectName){
+    	if(mName != null && mName != ""){
+    		mName = projectName;
+		}else {
+			throw new RuntimeException();
+		}
+    }
 	public int getId() {
 		return mId;
 	}

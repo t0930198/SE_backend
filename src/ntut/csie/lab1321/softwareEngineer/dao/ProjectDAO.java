@@ -23,7 +23,7 @@ public class ProjectDAO {
 		PreparedStatement pstm = null;
 		try{
 			con = DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO project SET name=?, note=?");
+			pstm = con.prepareStatement("INSERT INTO project SET name=?, notes=?");
 			pstm.setString(1, project.getName());
 			pstm.setString(2, project.getNote());
 			pstm.execute();
@@ -48,7 +48,7 @@ public class ProjectDAO {
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE project SET name=?, note=? WHERE id=?");
+			pstm = con.prepareStatement("UPDATE project SET name=?, notes=? WHERE id=?");
 			pstm.setString(1, project.getName());
 			pstm.setString(2, project.getNote());
 			pstm.setInt(3, id);
@@ -82,7 +82,7 @@ public class ProjectDAO {
 			if(rs.next()){
 				project = new Project(id);
 				project.setName(rs.getString("name"));
-				project.setNote(rs.getString("note"));
+				project.setNote(rs.getString("notes"));
 				
 			}
 		}catch(SQLException e){

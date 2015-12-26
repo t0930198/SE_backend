@@ -33,6 +33,7 @@ public class AccountRESTfulApi {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createAccount(String entity){
 		JSONObject json = new JSONObject(entity);
+		// 創立帳號的時候, 如果有重複創建就擋掉
 		Account account = AccountDAO.getInstance().getAccountByName(json.getString("username"));
 		if(account != null){
 			JSONObject response = new JSONObject();
@@ -41,9 +42,11 @@ public class AccountRESTfulApi {
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
 		}
+		// 如果沒有重複創帳號, 則可創立新帳號
 		account = new Account(json.getString("username"));
 		account.setmEmail(json.getString("email"));
 		account.setmPassword(json.getString("password"));
+		
 		boolean status = AccountDAO.getInstance().createAccount(account);
 		if(status){
 			JSONObject response = new JSONObject();
