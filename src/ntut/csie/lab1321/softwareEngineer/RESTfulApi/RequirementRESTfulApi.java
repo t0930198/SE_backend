@@ -80,7 +80,7 @@ public class RequirementRESTfulApi {
 	}
 	
 	@PUT
-	@Path("{requirementId}")
+	@Path("/{requirementId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateRequirement(@PathParam("requirementId") int requirementId, String entity){
 		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId);
@@ -98,14 +98,17 @@ public class RequirementRESTfulApi {
 		}
 	}
 	@DELETE
-	@Path("{requirementId}")
+	@Path("/{requirementId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteRequirement(@PathParam("requirementId") int requirementId, String entity){
+	public Response deleteRequirement(@PathParam("requirementId") int requirementId, String entity) {
 		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId);
-		if(requirement == null)
+		if (requirement == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
-		if(RequirementDAO.getInstance().delete(requirementId))
-			entity = "success delete requirement";
-		return Response.status(Response.Status.OK).entity(entity).build();
+		}
+		boolean isDeleteSuccess = RequirementDAO.getInstance().delete(requirementId);
+		if (!isDeleteSuccess) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+		return Response.status(Response.Status.OK).entity("success delete requirement").build();
 	}
 }

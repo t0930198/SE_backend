@@ -81,7 +81,7 @@ public class ProjectDAO {
 			rs = stm.executeQuery("SELECT * FROM project WHERE name =" + "'" + name + "'");
 			if(rs.next()){
 				project = new Project(name);
-				project.setName(rs.getString("name"));
+				project.setId(rs.getInt("id"));
 				project.setNote(rs.getString("notes"));
 				
 			}
@@ -138,7 +138,7 @@ public class ProjectDAO {
 		}
 		return project;
 	}
-	public boolean delete(int id){
+	public boolean delete(int porjectId){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -146,11 +146,10 @@ public class ProjectDAO {
 
 		try{
 			stm = con.createStatement();
-			rs = stm.executeQuery("DELETE FROM project WHERE id = '"+id+"'");
-			if(rs.rowDeleted())
+			int count = stm.executeUpdate("DELETE FROM project WHERE id =" + "'" + porjectId + "'");
+			if(count == 1){
 				return true;
-			else 
-				return false;
+			}
 		}
 		catch(SQLException e){
 			e.printStackTrace();

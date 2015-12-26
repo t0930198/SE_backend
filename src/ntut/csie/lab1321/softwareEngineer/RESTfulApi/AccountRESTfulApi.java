@@ -86,8 +86,13 @@ public class AccountRESTfulApi {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateAccount(@PathParam("accountId") int accountId, String entity){
 		Account account = AccountDAO.getInstance().getAccountById(accountId);
-		if(account == null)
-			return Response.status(Response.Status.NOT_FOUND).entity(entity).build();
+		if(account == null){
+			JSONObject response = new JSONObject();
+			response.put("message", "Account is not found");
+			response.put("status_code", 4);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.NOT_FOUND).entity(entityResponse).build();
+		}
 		try{
 			JSONObject accountJson = new JSONObject(entity);
 			account.setmUsername(accountJson.getString("username"));
