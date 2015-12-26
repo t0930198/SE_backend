@@ -25,10 +25,11 @@ public class RequirementDAO {
 		try{
 			long currentTime = System.currentTimeMillis();
 			con = DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO requirement SET name=?, description=?, star_time=?");
+			pstm = con.prepareStatement("INSERT INTO requirement SET name=?, description=?, star_time=? ,hadfix=?");
 			pstm.setString(1, requirement.getRequirementName());
 			pstm.setString(2, requirement.getRequirementDescription());
 			pstm.setLong(3, currentTime);
+			pstm.setBoolean(4, requirement.getRequirementHadfix());
 			pstm.execute();
 			pstm.close();
 			return true;
@@ -44,18 +45,19 @@ public class RequirementDAO {
 		return false;
 	}
 	
-	public boolean updateRequirement(Requirement requirement, int id){
+	public boolean updateRequirement(Requirement requirement, int id,boolean hadfix){
 		int updateCount = -1;
 		boolean updateStatus = false;
 		Connection con = null;
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, command=? WHERE id =?");
+			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, command=?, hadfix=? WHERE id =? ");
 			pstm.setString(1, requirement.getRequirementName());
 			pstm.setString(2, requirement.getRequirementDescription());
 			pstm.setString(3, requirement.getRequirementCommand());
-			pstm.setInt(4, id);
+			pstm.setBoolean(4, hadfix);
+			pstm.setInt(5, id);
 			updateCount = pstm.executeUpdate();
 			
 			if (updateCount > 0) {
@@ -90,6 +92,7 @@ public class RequirementDAO {
 				requirement.setRequirementDescription(rs.getString("description"));
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
 				requirement.setmRequirementCommand(rs.getString("command"));
+				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -128,6 +131,7 @@ public class RequirementDAO {
 				requirement.setRequirementDescription(rs.getString("description"));
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
 				requirement.setmRequirementCommand(rs.getString("command"));
+				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
 				requirements.add(requirement);
 			}
 		}catch (SQLException e) {

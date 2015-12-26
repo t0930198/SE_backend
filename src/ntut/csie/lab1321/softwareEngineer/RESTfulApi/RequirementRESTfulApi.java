@@ -2,6 +2,7 @@ package ntut.csie.lab1321.softwareEngineer.RESTfulApi;
 
 import java.util.ArrayList;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -33,6 +34,7 @@ public class RequirementRESTfulApi {
 			requirementJSON.put("status", requirement.getRequirementType());
 			requirementJSON.put("starttime", requirement.getRequirementStartTime());
 			requirementJSON.put("command", requirement.getRequirementCommand());
+			requirementJSON.put("hadfix", requirement.getRequirementHadfix());
 			requirementsJSON.put(requirementJSON);
 		}
 //		for(int i =0; i<requirements.size(); i++ ){
@@ -52,6 +54,7 @@ public class RequirementRESTfulApi {
 		requirement.setRequirementDescription(json.getString("description"));
 		requirement.setRequirementStartTime(json.getLong("star_time"));
 		requirement.setmRequirementCommand(json.getString("command"));	
+		requirement.setRequirementHadfix(true);
 		RequirementDAO.getInstance().creatRequirement(requirement);
 		
 		return Response.status(Response.Status.OK).entity("GET").build();
@@ -69,6 +72,7 @@ public class RequirementRESTfulApi {
 			requirementJSON.put("description", requirement.getRequirementDescription());
 			requirementJSON.put("star_time", requirement.getRequirementStartTime());
 			requirementJSON.put("command", requirement.getRequirementCommand());
+			requirementJSON.put("hadfix", requirement.getRequirementHadfix());
 			String entity = requirementJSON.toString();		   
 			return Response.status(Response.Status.OK).entity(entity).build();
 		}
@@ -87,9 +91,17 @@ public class RequirementRESTfulApi {
 			requirement.setRequirementName(requirementJSON.getString("name"));
 			requirement.setRequirementDescription(requirementJSON.getString("description"));
 			requirement.setmRequirementCommand(requirementJSON.getString("command"));
+			requirement.setRequirementHadfix(requirementJSON.getBoolean("hadfix"));
 			return Response.status(Response.Status.OK).entity(entity).build();
 		}catch(JSONException e){
 			return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
 		}
 	}
+//	@DELETE
+//	@Path("{requirementId}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public boolean deleteRequirement(@PathParam("requirementId") int requiremeintId, String entity){
+//		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requiremeintId);
+//		
+//	}
 }

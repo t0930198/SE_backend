@@ -7,6 +7,7 @@ public class Requirement {
 	private long mRequirementStartTime = -1;
 	private String mRequirementCommand = "";
 	private String mRequirementType = "";
+	private boolean mRequirementHadfix = false;
 	
 	public String getRequirementType() {
 		return mRequirementType;
@@ -51,5 +52,15 @@ public class Requirement {
 	
 	public void setmRequirementCommand(String command){
 		this.mRequirementCommand = command;		
+	}
+	
+	public boolean getRequirementHadfix()
+	{
+		return mRequirementHadfix;
+	}
+	
+	public void setRequirementHadfix(boolean hadfix)
+	{
+		this.mRequirementHadfix = hadfix;
 	}
 }
