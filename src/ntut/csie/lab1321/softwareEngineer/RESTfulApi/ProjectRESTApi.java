@@ -24,7 +24,7 @@ public class ProjectRESTApi {
 		}
 		else
 		{
-			projectJSON.put("id", project.getmId());
+			projectJSON.put("id", project.getId());
 			projectJSON.put("name", project.getName());
 			projectJSON.put("note",project.getNote());
 			return Response.status(Response.Status.OK).entity(projectJSON.toString()).build();

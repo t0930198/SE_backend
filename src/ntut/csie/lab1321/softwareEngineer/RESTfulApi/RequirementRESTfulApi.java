@@ -97,11 +97,15 @@ public class RequirementRESTfulApi {
 			return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
 		}
 	}
-//	@DELETE
-//	@Path("{requirementId}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public boolean deleteRequirement(@PathParam("requirementId") int requiremeintId, String entity){
-//		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requiremeintId);
-//		
-//	}
+	@DELETE
+	@Path("{requirementId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteRequirement(@PathParam("requirementId") int requirementId, String entity){
+		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId);
+		if(requirement == null)
+			return Response.status(Response.Status.NOT_FOUND).build();
+		if(RequirementDAO.getInstance().delete(requirementId))
+			entity = "success delete requirement";
+		return Response.status(Response.Status.OK).entity(entity).build();
+	}
 }

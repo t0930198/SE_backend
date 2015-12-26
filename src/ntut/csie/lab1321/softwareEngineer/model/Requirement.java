@@ -15,6 +15,10 @@ public class Requirement {
 	public void setRequireType(String type) {
 		this.mRequirementType = type;
 	}
+	
+	public void deleteRequirement(int id){
+		mId = id;
+	}
 	public Requirement(int id){
 		mId = id;
 	}
