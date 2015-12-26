@@ -76,7 +76,44 @@ public class RequirementDAO {
 		}
 		return updateStatus;
 	}
-	
+	public Requirement getRequirementByName(String name){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		Requirement  requirement = null;
+		try{
+			con = DBConnector.connectToMySQL();
+			stm = con.createStatement();
+			rs = stm.executeQuery("SELECT * FROM requirement WHERE name =" + "'" + name + "'");
+			if(rs.next()){
+				requirement = new Requirement(name);
+				requirement.setId(rs.getInt("id"));
+				requirement.setRequirementDescription(rs.getString("description"));
+				requirement.setRequirementStartTime(rs.getLong("star_time"));
+				requirement.setmRequirementCommand(rs.getString("command"));
+				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
+				requirement.setRequirementType(rs.getString("type"));
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return requirement;
+		
+	}
 	public Requirement getRequirementByrId(int id){
 		Connection con = null;
 		Statement stm = null;
@@ -93,6 +130,7 @@ public class RequirementDAO {
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
 				requirement.setmRequirementCommand(rs.getString("command"));
 				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
+				requirement.setRequirementType(rs.getString("type"));
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -132,6 +170,7 @@ public class RequirementDAO {
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
 				requirement.setmRequirementCommand(rs.getString("command"));
 				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
+				requirement.setRequirementType(rs.getString("type"));
 				requirements.add(requirement);
 			}
 		}catch (SQLException e) {

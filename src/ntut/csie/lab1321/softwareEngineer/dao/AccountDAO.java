@@ -86,7 +86,7 @@ public class AccountDAO {
 			rs = stm.executeQuery("SELECT * FROM user WHERE account =" + "'" + name + "'");
 			if (rs.next()) {
 				account = new Account(name);
-				account.setmUsername(rs.getString("name"));
+				account.setmId(rs.getInt("id"));
 				account.setmPassword(rs.getString("password"));
 				account.setmEmail(rs.getString("email"));
 			}

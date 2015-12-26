@@ -12,7 +12,7 @@ public class Requirement {
 	public String getRequirementType() {
 		return mRequirementType;
 	}
-	public void setRequireType(String type) {
+	public void setRequirementType(String type) {
 		this.mRequirementType = type;
 	}
 	
