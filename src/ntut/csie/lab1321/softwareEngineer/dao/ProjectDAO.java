@@ -138,7 +138,7 @@ public class ProjectDAO {
 		}
 		return project;
 	}
-	public boolean delete(int porjectId){
+	public boolean delete(int projectId){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -146,7 +146,7 @@ public class ProjectDAO {
 
 		try{
 			stm = con.createStatement();
-			int count = stm.executeUpdate("DELETE FROM project WHERE id =" + "'" + porjectId + "'");
+			int count = stm.executeUpdate("DELETE FROM project WHERE id =" + "'" + projectId + "'");
 			if(count == 1){
 				return true;
 			}

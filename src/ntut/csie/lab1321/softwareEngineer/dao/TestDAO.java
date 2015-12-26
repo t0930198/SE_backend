@@ -107,6 +107,40 @@ public class TestDAO {
 		return test;
 	}
 	
+	public Test getTestByName(String name){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		Test test =null;
+		try{
+			con = DBConnector.connectToMySQL();
+			stm = con.createStatement();
+			rs = stm.executeQuery("SELECT * FROM test WHERE name =" + "'" + name + "'");
+			if(rs.next()){
+				test = new Test(name);
+				test.setTestId(rs.getInt("id"));
+				test.setTestDescription(rs.getString("description"));
+				test.setTestRid(rs.getInt("testrid"));
+			}				
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return test;
+	}
 	public ArrayList<Test> getTests(){
 		Connection con = null;
 		Statement stm = null;
@@ -145,6 +179,37 @@ public class TestDAO {
 		return tests;
 	}
 	
-	
+	public boolean delete(int testId){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		con = DBConnector.connectToMySQL();
+		
+		try{
+			stm = con.createStatement();
+			int count = stm.executeUpdate("DELETE FROM test WHERE id =" + "'" + testId + "'");
+			if(count == 1){
+				return true;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 
 }
