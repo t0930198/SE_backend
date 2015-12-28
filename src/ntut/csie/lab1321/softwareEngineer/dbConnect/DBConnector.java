@@ -11,7 +11,7 @@ public class DBConnector {
 		String connectionURL = "";
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connectionURL = "jdbc:mysql://127.0.0.1:3306/softwareengineering?user=root&password=1234";
+			connectionURL = "jdbc:mysql://127.0.0.1:3306/softwareengineering?user=se&password=1234";
 			if(connection == null || connection.isClosed()){
 				connection = DriverManager.getConnection(connectionURL);
 			}
