@@ -18,18 +18,19 @@ public class RequirementDAO {
 		}
 		return mInstance;
 	}
-	public boolean creatRequirement(Requirement requirement){
+	public boolean creatRequirement(Requirement requirement, int projectId){
 		
 		Connection con = null;
 		PreparedStatement pstm = null;
 		try{
 			long currentTime = System.currentTimeMillis();
 			con = DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO requirement SET name=?, description=?, star_time=? ,hadfix=?");
+			pstm = con.prepareStatement("INSERT INTO requirement SET name=?, description=?, star_time=? ,hadfix=?, projectid =?");
 			pstm.setString(1, requirement.getRequirementName());
 			pstm.setString(2, requirement.getRequirementDescription());
 			pstm.setLong(3, currentTime);
 			pstm.setBoolean(4, requirement.getRequirementHadfix());
+			pstm.setLong(5, projectId);
 			pstm.execute();
 			pstm.close();
 			return true;
@@ -45,19 +46,19 @@ public class RequirementDAO {
 		return false;
 	}
 	
-	public boolean updateRequirement(Requirement requirement, int id,boolean hadfix){
+	public boolean updateRequirement(Requirement requirement, int id,boolean hadfix, int projectId){
 		int updateCount = -1;
 		boolean updateStatus = false;
 		Connection con = null;
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, command=?, hadfix=? WHERE id =? ");
+			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, command=?, hadfix=?, type=? WHERE id = '" + id + "'" + "AND projectid = '" + projectId + "'");
 			pstm.setString(1, requirement.getRequirementName());
 			pstm.setString(2, requirement.getRequirementDescription());
 			pstm.setString(3, requirement.getRequirementCommand());
 			pstm.setBoolean(4, hadfix);
-			pstm.setInt(5, id);
+			pstm.setString(5, requirement.getRequirementType());
 			updateCount = pstm.executeUpdate();
 			
 			if (updateCount > 0) {
@@ -76,7 +77,7 @@ public class RequirementDAO {
 		}
 		return updateStatus;
 	}
-	public Requirement getRequirementByName(String name){
+	public Requirement getRequirementByName(String name, int projectId){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -84,7 +85,7 @@ public class RequirementDAO {
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			rs = stm.executeQuery("SELECT * FROM requirement WHERE name =" + "'" + name + "'");
+			rs = stm.executeQuery("SELECT * FROM requirement WHERE name =" + "'" + name + "'" + "AND projectid =" + "'" + projectId + "'");
 			if(rs.next()){
 				requirement = new Requirement(name);
 				requirement.setId(rs.getInt("id"));
@@ -114,7 +115,7 @@ public class RequirementDAO {
 		return requirement;
 		
 	}
-	public Requirement getRequirementByrId(int id){
+	public Requirement getRequirementByrId(int id, int projectId){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -122,7 +123,7 @@ public class RequirementDAO {
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			rs = stm.executeQuery("SELECT * FROM requirement WHERE id =" + "'" + id + "'");
+			rs = stm.executeQuery("SELECT * FROM requirement WHERE id =" + "'" + id + "'" + "AND projectid =" + "'" + projectId + "'");
 			if (rs.next()){
 				requirement = new Requirement(id);
 				requirement.setRequirementName(rs.getString("name"));
@@ -152,7 +153,7 @@ public class RequirementDAO {
 		return requirement;
 	}
 	
-	public ArrayList<Requirement> getRequirements(){
+	public ArrayList<Requirement> getRequirements(int projectid){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -160,7 +161,7 @@ public class RequirementDAO {
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			rs = stm.executeQuery("SELECT * FROM requirement");
+			rs = stm.executeQuery("SELECT * FROM requirement WHERE projectid = '" + projectid +"'");
 			
 			requirements = new ArrayList<Requirement>();
 			while (rs.next()){
@@ -203,11 +204,9 @@ public class RequirementDAO {
 
 		try{
 			stm = con.createStatement();
-			rs = stm.executeQuery("DELETE FROM requirement WHERE id = '"+id+"'");
-			if(rs.rowDeleted())
+			int count = stm.executeUpdate("DELETE FROM requirement WHERE id=" + "'" + id + "'");
+			if(count == 1)
 				return true;
-			else 
-				return false;
 		}
 		catch(SQLException e){
 			e.printStackTrace();

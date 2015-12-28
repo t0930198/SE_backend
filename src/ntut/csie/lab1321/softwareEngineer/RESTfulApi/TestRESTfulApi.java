@@ -17,7 +17,7 @@ import ntut.csie.lab1321.softwareEngineer.json.JSONException;
 import ntut.csie.lab1321.softwareEngineer.json.JSONObject;
 import ntut.csie.lab1321.softwareEngineer.dao.TestDAO;
 import ntut.csie.lab1321.softwareEngineer.model.Test;
-@Path("projects/{projectId}/tests")
+/*@Path("projects/{projectId}/tests")
 public class TestRESTfulApi {
 		@POST
 		@Produces
@@ -133,4 +133,4 @@ public class TestRESTfulApi {
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.OK).entity(entityResponse).build();
 		}
-}
+}*/

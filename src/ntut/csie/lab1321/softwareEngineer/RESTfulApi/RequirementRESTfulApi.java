@@ -22,9 +22,9 @@ import ntut.csie.lab1321.softwareEngineer.model.Requirement;
 public class RequirementRESTfulApi {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createRequirement(String entity){
+	public Response createRequirement(@PathParam("projectId") int projectId, String entity){
 		JSONObject json = new JSONObject(entity);
-		Requirement requirement = RequirementDAO.getInstance().getRequirementByName(json.getString("name"));
+		Requirement requirement = RequirementDAO.getInstance().getRequirementByName(json.getString("name"), projectId);
 		if(requirement != null){
 			JSONObject response = new JSONObject();
 			response.put("message", "PROJECT EXISTED");
@@ -37,7 +37,8 @@ public class RequirementRESTfulApi {
 		requirement.setRequirementStartTime(System.currentTimeMillis());
 		requirement.setmRequirementCommand(json.getString("command"));	
 		requirement.setRequirementHadfix(true);
-		boolean status = RequirementDAO.getInstance().creatRequirement(requirement);
+		requirement.setProjectId(projectId);
+		boolean status = RequirementDAO.getInstance().creatRequirement(requirement, projectId);
 		if(status){
 			JSONObject response = new JSONObject();
 			response.put("message", "Create Requirement success");
@@ -55,10 +56,9 @@ public class RequirementRESTfulApi {
 	}
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRequirements(){
-		//TODO
+	public Response getRequirements(@PathParam("projectId") int projectId){
 		JSONObject requirementJSON = new JSONObject();
-		ArrayList<Requirement> requirements = RequirementDAO.getInstance().getRequirements();
+		ArrayList<Requirement> requirements = RequirementDAO.getInstance().getRequirements(projectId);
 		JSONArray requirementsJSON = new JSONArray();
 		for(Requirement requirement : requirements){
 			requirementJSON.put("id", requirement.getId());
@@ -82,8 +82,8 @@ public class RequirementRESTfulApi {
 	@GET
 	@Path("/{requirementId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRequirement(@PathParam("requirementId") int requirementId){
-		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId);
+	public Response getRequirement(@PathParam("requirementId") int requirementId, @PathParam("projectId") int projectId){
+		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId, projectId);
 		if (requirement != null){
 			JSONObject requirementJSON = new JSONObject();
 			requirementJSON.put("id", requirement.getId());
@@ -101,8 +101,8 @@ public class RequirementRESTfulApi {
 	@PUT
 	@Path("/{requirementId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateRequirement(@PathParam("requirementId") int requirementId, String entity){
-		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId);
+	public Response updateRequirement(@PathParam("requirementId") int requirementId, @PathParam("projectId") int projectId ,String entity){
+		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId, projectId);
 		if(requirement == null){
 			JSONObject response = new JSONObject();
 			response.put("message", "Requirement is not found");
@@ -117,24 +117,34 @@ public class RequirementRESTfulApi {
 			requirement.setmRequirementCommand(requirementJSON.getString("command"));
 			requirement.setRequirementType(requirementJSON.getString("Type"));
 			requirement.setRequirementHadfix(requirementJSON.getBoolean("hadfix"));
-			RequirementDAO.getInstance().updateRequirement(requirement, requirementId, requirementJSON.getBoolean("hadfix"));
+			RequirementDAO.getInstance().updateRequirement(requirement, requirementId, requirementJSON.getBoolean("hadfix"), projectId);
 			return Response.status(Response.Status.OK).entity(entity).build();
 		}catch(JSONException e){
 			return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
 		}
+		//return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
+		 
 	}
+	
 	@DELETE
 	@Path("/{requirementId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteRequirement(@PathParam("requirementId") int requirementId, String entity) {
-		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId);
+	public Response deleteRequirement(@PathParam("requirementId") int requirementId, @PathParam("projectId") int projectId) {
+		Requirement requirement = RequirementDAO.getInstance().getRequirementByrId(requirementId, projectId);
 		if (requirement == null) {
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
+			JSONObject response = new JSONObject();
+			response.put("message", "Requirement is not found");
+			response.put("status_code", 4);
+			String entityResponse = response.toString();
+			return Response.status(Response.Status.NOT_FOUND).entity(entityResponse).build();		}
 		boolean isDeleteSuccess = RequirementDAO.getInstance().delete(requirementId);
 		if (!isDeleteSuccess) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
-		return Response.status(Response.Status.OK).entity("success delete requirement").build();
+		JSONObject response = new JSONObject();
+		response.put("message", "success delete requirement");
+		response.put("status_code", 5);
+		String entityResponse = response.toString();
+		return Response.status(Response.Status.OK).entity(entityResponse).build();
 	}
 }
