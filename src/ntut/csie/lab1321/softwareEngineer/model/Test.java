@@ -4,7 +4,8 @@ public class Test {
 	private int mId =-1;
 	private String mTestName = "";
 	private String mTestDescription = "";
-	private int mTestRid = -1;
+	private int mRequirmentid = -1;
+	private int mProjectid;
 	
 	
 	public Test(int id) {
@@ -34,10 +35,17 @@ public class Test {
 		mTestDescription = description;
 	}
 	
-	public int getTestRid(){
-		return mTestRid;
+	public int getRequirmentId(){
+		return mRequirmentid;
 	}
-	public void setTestRid(int rid){
-		mTestRid = rid;
+	
+	public void setRequirmentId(int rid){
+		mRequirmentid = rid;
+	}
+	public int getProjectId(){
+		return mProjectid;
+	}
+	public void setProjectId(int pid){
+		mProjectid = pid;
 	}
 }

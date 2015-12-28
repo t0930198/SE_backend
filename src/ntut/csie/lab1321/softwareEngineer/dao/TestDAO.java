@@ -18,7 +18,7 @@ public class TestDAO {
 		}
 		return mInstance;
 	}
-	public boolean creatTest(Test test){
+	public boolean creatTest(Test test,int projectId){
 		Connection con =null;
 		PreparedStatement pstm = null;
 		try{
@@ -26,7 +26,8 @@ public class TestDAO {
 			pstm = con.prepareStatement("INSERT INTO test SET name=?, description=?, testrid=?");
 			pstm.setString(1, test.getTestName());
 			pstm.setString(2, test.getTestDescription());
-			pstm.setInt(3, test.getTestRid());
+			pstm.setInt(3, test.getRequirmentId());
+			pstm.setInt(4, projectId);
 			pstm.execute();
 			pstm.close();
 			return true;
@@ -42,18 +43,17 @@ public class TestDAO {
 		return false;
 	}
 	
-	public boolean updateTest(Test test,int id){
+	public boolean updateTest(Test test,int id,int projectId){
 		int updateCount =-1;
 		boolean updateStatus = false;
 		Connection con = null;
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE test SET name=?, description=?,testrid=? WHERE id=?");
+			pstm = con.prepareStatement("UPDATE test SET name=?, description=?,testrid=? WHERE id= '" + id + "'" + "AND projectid = '" + projectId + "'");
 			pstm.setString(1, test.getTestName());
 			pstm.setString(2, test.getTestDescription());
-			pstm.setInt(3, test.getTestRid());
-			pstm.setInt(4, id);
+			pstm.setInt(3, test.getRequirmentId());
 			updateCount = pstm.executeUpdate();
 			
 			if(updateCount>0){
@@ -72,7 +72,7 @@ public class TestDAO {
 		}
 		return updateStatus;
 	}
-	public Test getTestByID(int id){
+	public Test getTestByID(int id,int project){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -85,7 +85,7 @@ public class TestDAO {
 				test = new Test(id);
 				test.setTestName(rs.getString("name"));
 				test.setTestDescription(rs.getString("description"));
-				test.setTestRid(rs.getInt("testrid"));				
+				test.setRequirmentId(rs.getInt("requirementid"));				
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -120,7 +120,7 @@ public class TestDAO {
 				test = new Test(name);
 				test.setTestId(rs.getInt("id"));
 				test.setTestDescription(rs.getString("description"));
-				test.setTestRid(rs.getInt("testrid"));
+				test.setRequirmentId(rs.getInt("requirementid"));
 			}				
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -156,7 +156,7 @@ public class TestDAO {
 				Test test = new Test(rs.getInt("id"));
 				test.setTestName(rs.getString("name"));
 				test.setTestDescription(rs.getString("description"));
-				test.setTestRid(rs.getInt("testrid"));
+				test.setRequirmentId(rs.getInt("requirementid"));
 				tests.add(test);
 			}
 		}catch (SQLException e) {
