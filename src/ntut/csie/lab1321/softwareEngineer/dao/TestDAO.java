@@ -23,7 +23,7 @@ public class TestDAO {
 		PreparedStatement pstm = null;
 		try{
 			con =  DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO test SET name=?, description=?, testrid=?");
+			pstm = con.prepareStatement("INSERT INTO test SET name=?, description=?, requirmentid=?");
 			pstm.setString(1, test.getTestName());
 			pstm.setString(2, test.getTestDescription());
 			pstm.setInt(3, test.getRequirmentId());
@@ -50,7 +50,7 @@ public class TestDAO {
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE test SET name=?, description=?,testrid=? WHERE id= '" + id + "'" + "AND projectid = '" + projectId + "'");
+			pstm = con.prepareStatement("UPDATE test SET name=?, description=?, requirmentid=? WHERE id= '" + id + "'" + "AND projectid = '" + projectId + "'");
 			pstm.setString(1, test.getTestName());
 			pstm.setString(2, test.getTestDescription());
 			pstm.setInt(3, test.getRequirmentId());
@@ -72,7 +72,7 @@ public class TestDAO {
 		}
 		return updateStatus;
 	}
-	public Test getTestByID(int id,int project){
+	public Test getTestByID(int id,int projectId){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -80,7 +80,7 @@ public class TestDAO {
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			rs = stm.executeQuery("SELECT * FROM test WHERE id =" + "'" + id + "'");
+			rs = stm.executeQuery("SELECT * FROM test WHERE id =" + "'" + id + "'"+ "'" + "AND projectid =" + "'" + projectId + "'");
 			if(rs.next()){
 				test = new Test(id);
 				test.setTestName(rs.getString("name"));
@@ -107,7 +107,7 @@ public class TestDAO {
 		return test;
 	}
 	
-	public Test getTestByName(String name){
+	public Test getTestByName(String name, int projectId){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -115,7 +115,7 @@ public class TestDAO {
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			rs = stm.executeQuery("SELECT * FROM test WHERE name =" + "'" + name + "'");
+			rs = stm.executeQuery("SELECT * FROM test WHERE name =" + "'" + name + "'"+ "AND projectid =" + "'" + projectId + "'");
 			if(rs.next()){
 				test = new Test(name);
 				test.setTestId(rs.getInt("id"));
@@ -141,7 +141,7 @@ public class TestDAO {
 		}
 		return test;
 	}
-	public ArrayList<Test> getTests(){
+	public ArrayList<Test> getTests(int projectid){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
@@ -149,7 +149,7 @@ public class TestDAO {
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			rs = stm.executeQuery("SELECT * FROM test");
+			rs = stm.executeQuery("SELECT * FROM test WHERE projectid = '" + projectid +"'");
 			
 			tests = new ArrayList<Test>();
 			while(rs.next()){

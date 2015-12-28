@@ -15,15 +15,17 @@ import javax.ws.rs.core.Response;
 import ntut.csie.lab1321.softwareEngineer.json.JSONArray;
 import ntut.csie.lab1321.softwareEngineer.json.JSONException;
 import ntut.csie.lab1321.softwareEngineer.json.JSONObject;
+import ntut.csie.lab1321.softwareEngineer.dao.RequirementDAO;
 import ntut.csie.lab1321.softwareEngineer.dao.TestDAO;
+import ntut.csie.lab1321.softwareEngineer.model.Requirement;
 import ntut.csie.lab1321.softwareEngineer.model.Test;
-/*@Path("projects/{projectId}/tests")
+@Path("projects/{projectId}/tests")
 public class TestRESTfulApi {
 		@POST
-		@Produces
-		public Response createTest(String entity){
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response createTest(@PathParam("projectId") int projectId,String entity){
 			JSONObject json = new JSONObject(entity);
-			Test test = TestDAO.getInstance().getTestByName(json.getString("name"));
+			Test test = TestDAO.getInstance().getTestByName(json.getString("name"),projectId);
 			if(test != null){
 				JSONObject response = new JSONObject();
 				response.put("message", "TEST EXISTED");
@@ -31,9 +33,25 @@ public class TestRESTfulApi {
 				String entityResponse = response.toString();
 				return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
 			}
+			ArrayList<Requirement> requirements = RequirementDAO.getInstance().getRequirements(projectId);
+			boolean test_RequirementIdSuccess = false;
+			for(Requirement requirement : requirements){
+				if(json.getInt("requirmentid") ==requirement.getId()){
+					test_RequirementIdSuccess = true;
+				}
+			}
+			if(!test_RequirementIdSuccess){
+				JSONObject response = new JSONObject();
+				response.put("message", "NO FIND RequirementId");
+				response.put("status_code", 6);
+				String entityResponse = response.toString();
+				return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
+			}
 			test = new Test(json.getString("name"));
 			test.setTestDescription(json.getString("description"));
-			boolean status =TestDAO.getInstance().creatTest(test);
+			test.setRequirmentId(json.getInt("requirmentid"));
+			test.setProjectId(projectId);
+			boolean status =TestDAO.getInstance().creatTest(test, projectId);
 			if(status){
 				JSONObject response = new JSONObject();
 				response.put("message", "Create Test success");
@@ -50,17 +68,16 @@ public class TestRESTfulApi {
 			}
 		}
 		@GET
-		@Path("/{testId}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response getTests(@PathParam("testId")int test_id){
+		public Response getTests(@PathParam("projectId")int projectId){
 			JSONObject testJSON = new JSONObject();
-			ArrayList<Test> tests = TestDAO.getInstance().getTests();
+			ArrayList<Test> tests = TestDAO.getInstance().getTests(projectId);
 			JSONArray testsJSON = new JSONArray();
 			for(Test test : tests){
 				testJSON.put("id",test.getTestId());
 				testJSON.put("name",test.getTestName());
 				testJSON.put("description", test.getTestDescription());
-				testJSON.put("testrid", test.getTestRid());
+				testJSON.put("requirmentid", test.getRequirmentId());
 				testsJSON.put(test);				
 			}
 			if(testsJSON.length()==0){
@@ -72,24 +89,24 @@ public class TestRESTfulApi {
 		@GET
 		@Path("/{testId}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response getTest(@PathParam("testId")int test_id){
+		public Response getTest(@PathParam("testId")int test_id,@PathParam("projectId") int projectId){
 			JSONObject testJSON = new JSONObject();
-			Test test = TestDAO.getInstance().getTestByID(test_id);
+			Test test = TestDAO.getInstance().getTestByID(test_id,projectId);
 			if(test == null){
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
 			testJSON.put("id",test.getTestId());
 			testJSON.put("name",test.getTestName());
 			testJSON.put("description", test.getTestDescription());
-			testJSON.put("testrid", test.getTestRid());
+			testJSON.put("requirmentid", test.getRequirmentId());
 			return Response.status(Response.Status.OK).entity(testJSON.toString()).build();
 		}
 		
 		@PUT
 		@Path("/{testId}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response updateTest(@PathParam("testId") int testid,String entity){
-			Test test = TestDAO.getInstance().getTestByID(testid);
+		public Response updateTest(@PathParam("testId") int testid, @PathParam("projectId") int projectId ,String entity){
+			Test test = TestDAO.getInstance().getTestByID(testid,projectId);
 			if(test == null){
 				JSONObject response = new JSONObject();
 				response.put("message", "Test is not found");
@@ -102,8 +119,9 @@ public class TestRESTfulApi {
 				JSONObject testJSON = new JSONObject(entity);
 				test.setTestName(testJSON.getString("name"));
 				test.setTestDescription(testJSON.getString("description"));
-				test.setTestRid(testJSON.getInt("testrid"));
-				TestDAO.getInstance().updateTest(test, testid);
+				test.setRequirmentId(testJSON.getInt("requirementid"));
+				
+				TestDAO.getInstance().updateTest(test, testid,projectId);
 				return Response.status(Response.Status.OK).entity(entity).build();
 
 			}catch(JSONException e){
@@ -114,8 +132,8 @@ public class TestRESTfulApi {
 		@DELETE
 		@Path("/{testId}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response deleteTest(@PathParam("testId") int testid){
-			Test test = TestDAO.getInstance().getTestByID(testid);
+		public Response deleteTest(@PathParam("testId") int testid, @PathParam("projectId") int projectId ){
+			Test test = TestDAO.getInstance().getTestByID(testid,projectId);
 			if(test == null){
 				JSONObject response = new JSONObject();
 				response.put("message", "Test is not found");
@@ -133,4 +151,4 @@ public class TestRESTfulApi {
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.OK).entity(entityResponse).build();
 		}
-}*/
+}
