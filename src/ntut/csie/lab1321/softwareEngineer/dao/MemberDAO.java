@@ -86,19 +86,23 @@ public class MemberDAO {
 		}
 		return Members;
 	}
-	
-	public Member getMemberById(int id){
+
+	public boolean delete(int projectid){
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
-		Member member = null;
+		con = DBConnector.connectToMySQL();
+		
 		try{
-			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			
+			int count = stm.executeUpdate("DELETE FROM Member WHERE project_id =" + "'" + projectid + "'");
+			if(count == 1){
+				return true;
+			}
 		}catch(SQLException e){
 			e.printStackTrace();
-		}finally{
+		}
+		finally {
 			try {
 				if (rs != null) {
 					rs.close();
@@ -113,38 +117,6 @@ public class MemberDAO {
 				e.printStackTrace();
 			}
 		}
-		return member;
+		return false;
 	}
-	//確認User在特定專案的role
-	public Member getMemberByUserAndProjectId(int userid,int projectid){
-		Connection con = null;
-		Statement stm = null;
-		ResultSet rs = null;
-		Member member = null;
-		try{
-			con = DBConnector.connectToMySQL();
-			stm = con.createStatement();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}finally{
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stm != null) {
-					stm.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return member;
-	}
-//	
-//	public boolean delete(int projectid){
-//		
-//	}
 }
