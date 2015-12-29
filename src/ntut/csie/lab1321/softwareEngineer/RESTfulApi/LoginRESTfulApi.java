@@ -16,7 +16,8 @@ public class LoginRESTfulApi {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response AccountLogin(String entity){
 		JSONObject json = new JSONObject(entity);
-		Account account = AccountDAO.getInstance().getAccountByName(json.getString("account"));
+		Account account = AccountDAO.getInstance().getAccountByName(json.getString("username"));
+		
 		//比對帳號，無此帳號
 		if(account == null){
 			JSONObject response = new JSONObject();
@@ -33,12 +34,12 @@ public class LoginRESTfulApi {
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
 		}
-		JSONObject accountJSON = new JSONObject();
-		accountJSON.put("id", account.getId());
-		accountJSON.put("username", account.getmUsername());
-		accountJSON.put("password", account.getmPassword());
-		accountJSON.put("email", account.getmEmail());
-		String _entity = accountJSON.toString();		   
+		JSONObject loginJSON = new JSONObject();
+		loginJSON.put("id", account.getId());
+		loginJSON.put("username", account.getmUsername());
+		loginJSON.put("password", account.getmPassword());
+		loginJSON.put("email", account.getmEmail());
+		String _entity = loginJSON.toString();		   
 		return Response.status(Response.Status.OK).entity(_entity).build();
 	}
 }

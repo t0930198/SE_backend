@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import ntut.csie.lab1321.softwareEngineer.dbConnect.DBConnector;
+import ntut.csie.lab1321.softwareEngineer.model.Account;
 import ntut.csie.lab1321.softwareEngineer.model.Member;;
 
 public class MemberDAO {
@@ -48,14 +50,23 @@ public class MemberDAO {
 //		
 //	}
 	//用於找此User所有專案
-	public Member getMemberByUserId(int userid){
+	public ArrayList<Member> getMembersByUserId(int userid){
 		Connection con = null;
-		Statement stm = null;
+		Statement stm = null;		
 		ResultSet rs = null;
-		Member member = null;
+		ArrayList<Member> Members = null;
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
+			rs = stm.executeQuery("SELECT * FROM member WHERE user_id =" + "'" + userid + "'");
+			Members = new ArrayList<Member>();
+			while (rs.next()) {
+				Member member = new Member(userid);
+				member.setId(rs.getInt("id"));
+				member.setProjectId(rs.getInt("project_id"));
+				member.setRole(rs.getString("role"));
+				Members.add(member);
+			}
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally{
@@ -73,7 +84,7 @@ public class MemberDAO {
 				e.printStackTrace();
 			}
 		}
-		return member;
+		return Members;
 	}
 	
 	public Member getMemberById(int id){

@@ -1,6 +1,4 @@
 package ntut.csie.lab1321.softwareEngineer.RESTfulApi;
-import java.sql.SQLException;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,11 +10,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ntut.csie.lab1321.softwareEngineer.dao.ProjectDAO;
-import ntut.csie.lab1321.softwareEngineer.dao.RequirementDAO;
 import ntut.csie.lab1321.softwareEngineer.json.JSONException;
 import ntut.csie.lab1321.softwareEngineer.json.JSONObject;
 import ntut.csie.lab1321.softwareEngineer.model.Project;
-import ntut.csie.lab1321.softwareEngineer.model.Requirement;
 
 @Path("projects")
 public class ProjectRESTApi {
@@ -50,7 +46,7 @@ public class ProjectRESTApi {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(entityResponse).build();
 		}
 	}
-
+	
 	@GET
 	@Path("/{projectId}")
 	@Produces(MediaType.APPLICATION_JSON)
