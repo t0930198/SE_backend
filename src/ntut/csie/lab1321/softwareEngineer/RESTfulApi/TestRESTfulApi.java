@@ -117,8 +117,23 @@ public class TestRESTfulApi {
 			
 			try{
 				JSONObject testJSON = new JSONObject(entity);
+				ArrayList<Requirement> requirements = RequirementDAO.getInstance().getRequirements(projectId);
+				boolean test_RequirementIdSuccess = false;
+				for(Requirement requirement : requirements){
+					if(testJSON.getInt("requirmentid") ==requirement.getId()){
+						test_RequirementIdSuccess = true;
+					}
+				}
+				if(!test_RequirementIdSuccess){
+					JSONObject response = new JSONObject();
+					response.put("message", "NO FIND RequirementId");
+					response.put("status_code", 6);
+					String entityResponse = response.toString();
+					return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
+				}
 				test.setTestName(testJSON.getString("name"));
 				test.setTestDescription(testJSON.getString("description"));
+				
 				test.setRequirmentId(testJSON.getInt("requirementid"));
 				
 				TestDAO.getInstance().updateTest(test, testid,projectId);
