@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import ntut.csie.lab1321.softwareEngineer.dbConnect.DBConnector;
-import ntut.csie.lab1321.softwareEngineer.model.Account;
 import ntut.csie.lab1321.softwareEngineer.model.Member;;
 
 public class MemberDAO {
@@ -26,10 +25,11 @@ public class MemberDAO {
 		PreparedStatement pstm = null;
 		try{
 			con = DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO member SET user_id=?, project_id=?, role=?");
-			pstm.setInt(1, member.getUserId());
-			pstm.setInt(2, member.getProjectId());
+			pstm = con.prepareStatement("INSERT INTO member SET project_id=?, user_id=?, role=?, username=?");
+			pstm.setLong(1, member.getProjectId());
+			pstm.setLong(2, member.getUserId());
 			pstm.setString(3, member.getRole());
+			pstm.setString(4, member.getUsername());
 			pstm.execute();
 			pstm.close();
 			return true;
@@ -37,14 +37,50 @@ public class MemberDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				con.close();
+				if (con != null) {
+					con.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return false;
 	}
-	
+	public Member getMemberByProjectId(int projectId, int userId){
+		Connection con = null;
+		Statement stm = null;
+		ResultSet rs = null;
+		Member member = null;
+		try{
+			con = DBConnector.connectToMySQL();
+			stm = con.createStatement();
+			rs = stm.executeQuery("SELECT * FROM member WHERE project_id =" + "'" + projectId + "'" + "AND user_id=" + "'" + userId + "'");
+			if(rs.next()){
+				member = new Member(userId, projectId);
+				member.setId(rs.getInt("id"));
+				member.setRole(rs.getString("role"));
+				member.setUsername(rs.getString("username"));
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stm != null) {
+					stm.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return member;
+	}
 	//update¼È¤£¤ä´©role­×§ï
 //	public boolean updateMember(Member member){
 //		
@@ -61,10 +97,11 @@ public class MemberDAO {
 			rs = stm.executeQuery("SELECT * FROM member WHERE user_id =" + "'" + userid + "'");
 			Members = new ArrayList<Member>();
 			while (rs.next()) {
-				Member member = new Member(userid);
-				member.setId(rs.getInt("id"));
+				Member member = new Member(rs.getInt("id"));
+				member.setUserId(userid);
 				member.setProjectId(rs.getInt("project_id"));
 				member.setRole(rs.getString("role"));
+				member.setUsername(rs.getString("username"));
 				Members.add(member);
 			}
 		}catch(SQLException e){

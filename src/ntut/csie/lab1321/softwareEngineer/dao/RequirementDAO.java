@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.glassfish.hk2.internal.StarFilter;
+
 import ntut.csie.lab1321.softwareEngineer.dbConnect.DBConnector;
 import ntut.csie.lab1321.softwareEngineer.model.Requirement;
 public class RequirementDAO {
@@ -162,10 +164,12 @@ public class RequirementDAO {
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
 			rs = stm.executeQuery("SELECT * FROM requirement WHERE projectid = '" + projectid +"'");
-			
+			String  star = "";
 			requirements = new ArrayList<Requirement>();
 			while (rs.next()){
 				Requirement requirement = new Requirement(rs.getInt("id"));
+				star = "****************************************"+rs.getString("name");
+				System.out.println(star);
 				requirement.setRequirementName(rs.getString("name"));
 				requirement.setRequirementDescription(rs.getString("description"));
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
@@ -173,6 +177,9 @@ public class RequirementDAO {
 				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
 				requirement.setRequirementType(rs.getString("type"));
 				requirements.add(requirement);
+				//star += requirement.getId();
+				//System.out.println(star);
+				
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();

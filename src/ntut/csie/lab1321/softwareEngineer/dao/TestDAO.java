@@ -23,7 +23,7 @@ public class TestDAO {
 		PreparedStatement pstm = null;
 		try{
 			con =  DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO test SET name=?, description=?, requirmentid=?");
+			pstm = con.prepareStatement("INSERT INTO test SET name=?, description=?, requirmentid=?, projectid=?");
 			pstm.setString(1, test.getTestName());
 			pstm.setString(2, test.getTestDescription());
 			pstm.setInt(3, test.getRequirmentId());

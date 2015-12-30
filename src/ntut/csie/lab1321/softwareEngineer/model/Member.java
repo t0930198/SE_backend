@@ -6,19 +6,24 @@ public class Member {
 	private int mUesrId = -1;
 	private int mProjectId = -1;
 	private String mRole = "";
-	
+	private String mUsername ="";
 	public  Member(int userid,int projectid){
 		mUesrId = userid;
 		mProjectId = projectid;
 	}
-	public Member(int userid){
-		mUesrId = userid;
+	public Member(int id){
+		mId = id;
 	}
 	public Member(int userid,String role){
 		mUesrId = userid;
 		mRole = role;
 	}
-	
+	public String getUsername(){
+		return mUsername;
+	}
+	public void setUsername(String username){
+		mUsername = username;
+	}
 	public int getId(){
 		return mId;
 	}

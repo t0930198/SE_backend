@@ -57,11 +57,13 @@ public class RequirementRESTfulApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRequirements(@PathParam("projectId") int projectId){
-		JSONObject requirementJSON = new JSONObject();
+		
 		ArrayList<Requirement> requirements = RequirementDAO.getInstance().getRequirements(projectId);
 		JSONArray requirementsJSON = new JSONArray();
 		for(Requirement requirement : requirements){
+			JSONObject requirementJSON = new JSONObject();
 			requirementJSON.put("id", requirement.getId());
+			System.out.println("id:"+requirement.getId());
 			requirementJSON.put("name", requirement.getRequirementName());
 			requirementJSON.put("description", requirement.getRequirementDescription());
 			requirementJSON.put("status", requirement.getRequirementType());
