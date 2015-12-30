@@ -21,7 +21,7 @@ import ntut.csie.lab1321.softwareEngineer.model.Requirement_Relation;
 
 @Path("projects/{projectId}/requirement_relations")
 public class Requirement_RelationfulApi {
-	@POST
+	/*@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	
 	public Response changRelations(@PathParam("projectId") int projectId, ArrayList<String> entity,int rid){
@@ -147,5 +147,5 @@ public class Requirement_RelationfulApi {
 		response.put("status_code", 5);
 		String entityResponse = response.toString();
 		return Response.status(Response.Status.OK).entity(entityResponse).build();
-	}
+	}*/
 }

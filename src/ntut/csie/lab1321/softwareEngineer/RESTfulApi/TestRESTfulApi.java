@@ -21,7 +21,7 @@ import ntut.csie.lab1321.softwareEngineer.model.Requirement;
 import ntut.csie.lab1321.softwareEngineer.model.Test;
 @Path("projects/{projectId}/tests")
 public class TestRESTfulApi {
-		@POST
+		/*@POST
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response createTest(@PathParam("projectId") int projectId,String entity){
 			JSONObject json = new JSONObject(entity);
@@ -165,5 +165,5 @@ public class TestRESTfulApi {
 			response.put("status_code", 5);
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.OK).entity(entityResponse).build();
-		}
+		}*/
 }
