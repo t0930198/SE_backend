@@ -55,10 +55,10 @@ public class RequirementDAO {
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, command=?, hadfix=?, type=? WHERE id = '" + id + "'" + "AND projectid = '" + projectId + "'");
+			pstm = con.prepareStatement("UPDATE requirement SET name=?, description=?, comment=?, hadfix=?, type=? WHERE id = '" + id + "'" + "AND projectid = '" + projectId + "'");
 			pstm.setString(1, requirement.getRequirementName());
 			pstm.setString(2, requirement.getRequirementDescription());
-			pstm.setString(3, requirement.getRequirementCommand());
+			pstm.setString(3, requirement.getRequirementComment());
 			pstm.setBoolean(4, hadfix);
 			pstm.setString(5, requirement.getRequirementType());
 			updateCount = pstm.executeUpdate();
@@ -93,7 +93,7 @@ public class RequirementDAO {
 				requirement.setId(rs.getInt("id"));
 				requirement.setRequirementDescription(rs.getString("description"));
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
-				requirement.setmRequirementCommand(rs.getString("command"));
+				requirement.setmRequirementComment(rs.getString("comment"));
 				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
 				requirement.setRequirementType(rs.getString("type"));
 			}
@@ -131,7 +131,7 @@ public class RequirementDAO {
 				requirement.setRequirementName(rs.getString("name"));
 				requirement.setRequirementDescription(rs.getString("description"));
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
-				requirement.setmRequirementCommand(rs.getString("command"));
+				requirement.setmRequirementComment(rs.getString("comment"));
 				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
 				requirement.setRequirementType(rs.getString("type"));
 			}
@@ -173,7 +173,7 @@ public class RequirementDAO {
 				requirement.setRequirementName(rs.getString("name"));
 				requirement.setRequirementDescription(rs.getString("description"));
 				requirement.setRequirementStartTime(rs.getLong("star_time"));
-				requirement.setmRequirementCommand(rs.getString("command"));
+				requirement.setmRequirementComment(rs.getString("comment"));
 				requirement.setRequirementHadfix(rs.getBoolean("hadfix"));
 				requirement.setRequirementType(rs.getString("type"));
 				requirements.add(requirement);

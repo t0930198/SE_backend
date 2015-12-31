@@ -21,7 +21,7 @@ import ntut.csie.lab1321.softwareEngineer.model.Requirement;
 import ntut.csie.lab1321.softwareEngineer.model.Test;
 @Path("projects/{projectId}/tests")
 public class TestRESTfulApi {
-		/*@POST
+		@POST
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response createTest(@PathParam("projectId") int projectId,String entity){
 			JSONObject json = new JSONObject(entity);
@@ -36,7 +36,7 @@ public class TestRESTfulApi {
 			ArrayList<Requirement> requirements = RequirementDAO.getInstance().getRequirements(projectId);
 			boolean test_RequirementIdSuccess = false;
 			for(Requirement requirement : requirements){
-				if(json.getInt("requirmentid") ==requirement.getId()){
+				if(json.getInt("requirementid") ==requirement.getId()){
 					test_RequirementIdSuccess = true;
 				}
 			}
@@ -49,9 +49,9 @@ public class TestRESTfulApi {
 			}
 			test = new Test(json.getString("name"));
 			test.setTestDescription(json.getString("description"));
-			test.setRequirmentId(json.getInt("requirmentid"));
+			test.setRequirmentId(json.getInt("requirementid"));
 			test.setProjectId(projectId);
-			boolean status =TestDAO.getInstance().creatTest(test, projectId);
+			boolean status = TestDAO.getInstance().creatTest(test, projectId);
 			if(status){
 				JSONObject response = new JSONObject();
 				response.put("message", "Create Test success");
@@ -70,15 +70,16 @@ public class TestRESTfulApi {
 		@GET
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getTests(@PathParam("projectId")int projectId){
-			JSONObject testJSON = new JSONObject();
+			
 			ArrayList<Test> tests = TestDAO.getInstance().getTests(projectId);
 			JSONArray testsJSON = new JSONArray();
 			for(Test test : tests){
+				JSONObject testJSON = new JSONObject();
 				testJSON.put("id",test.getTestId());
 				testJSON.put("name",test.getTestName());
 				testJSON.put("description", test.getTestDescription());
-				testJSON.put("requirmentid", test.getRequirmentId());
-				testsJSON.put(test);				
+				testJSON.put("requirementid", test.getRequirmentId());
+				testsJSON.put(testJSON);				
 			}
 			if(testsJSON.length()==0){
 				return Response.status(Response.Status.NOT_FOUND).build();
@@ -98,7 +99,7 @@ public class TestRESTfulApi {
 			testJSON.put("id",test.getTestId());
 			testJSON.put("name",test.getTestName());
 			testJSON.put("description", test.getTestDescription());
-			testJSON.put("requirmentid", test.getRequirmentId());
+			testJSON.put("requirementid", test.getRequirmentId());
 			return Response.status(Response.Status.OK).entity(testJSON.toString()).build();
 		}
 		
@@ -120,7 +121,7 @@ public class TestRESTfulApi {
 				ArrayList<Requirement> requirements = RequirementDAO.getInstance().getRequirements(projectId);
 				boolean test_RequirementIdSuccess = false;
 				for(Requirement requirement : requirements){
-					if(testJSON.getInt("requirmentid") ==requirement.getId()){
+					if(testJSON.getInt("requirementid") ==requirement.getId()){
 						test_RequirementIdSuccess = true;
 					}
 				}
@@ -133,7 +134,6 @@ public class TestRESTfulApi {
 				}
 				test.setTestName(testJSON.getString("name"));
 				test.setTestDescription(testJSON.getString("description"));
-				
 				test.setRequirmentId(testJSON.getInt("requirementid"));
 				
 				TestDAO.getInstance().updateTest(test, testid,projectId);
@@ -165,5 +165,5 @@ public class TestRESTfulApi {
 			response.put("status_code", 5);
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.OK).entity(entityResponse).build();
-		}*/
+		}
 }

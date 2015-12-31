@@ -5,7 +5,7 @@ public class Requirement {
 	private String mRequirementName = "";
 	private String mRequirementDescription = "";
 	private long mRequirementStartTime = -1;
-	private String mRequirementCommand = "";
+	private String mRequirementComment = "";
 	private String mRequirementType = "";
 	private int projectId = -1;
 	private boolean mRequirementHadfix = false;
@@ -51,12 +51,12 @@ public class Requirement {
 	public void setRequirementStartTime(long startTime){
 		this.mRequirementStartTime = startTime;		
 	}
-	public String getRequirementCommand(){
-		return mRequirementCommand;
+	public String getRequirementComment(){
+		return mRequirementComment;
 	}
 	
-	public void setmRequirementCommand(String command){
-		this.mRequirementCommand = command;		
+	public void setmRequirementComment(String comment){
+		this.mRequirementComment = comment;		
 	}
 	
 	public boolean getRequirementHadfix()

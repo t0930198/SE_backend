@@ -29,8 +29,7 @@ public class MemberRESTfulApi {
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity(entityResponse).build();
 		}
-		member = new Member(json.getInt("project_id"));
-		member.setUserId(json.getInt("user_id"));
+		member = new Member(json.getInt("user_id"), json.getInt("project_id"));
 		member.setRole(json.getString("role"));
 		member.setUsername(json.getString("username"));
 		boolean status = MemberDAO.getInstance().createMemberDAO(member);

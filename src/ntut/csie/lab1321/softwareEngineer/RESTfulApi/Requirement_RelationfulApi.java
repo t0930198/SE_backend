@@ -24,7 +24,7 @@ public class Requirement_RelationfulApi {
 	/*@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	
-	public Response changRelations(@PathParam("projectId") int projectId, ArrayList<String> entity,int rid){
+	public Response changeRelations(@PathParam("projectId") int projectId, ArrayList<String> entity,int rid){
 		//§PÂ_rid¬O§_¦s¦b
 		Requirement _requirement = RequirementDAO.getInstance().getRequirementByrId(rid, projectId);
 		if(_requirement == null){
@@ -109,24 +109,25 @@ public class Requirement_RelationfulApi {
 			return Response.status(Response.Status.OK).entity(entityResponse).build(); 
 		}
 	}
-	
-	@GET
+	*/
+	/*@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRelations(int requirementId){
-		JSONObject relationJSON = new JSONObject();
+	public Response getRelations(int requirementId){		
 		ArrayList<Requirement_Relation> requirementrelations = Requirement_RelationDAO.getInstance().getRelationsByRequirementId(requirementId);
 		JSONArray relationsJSON = new JSONArray();
 		for(Requirement_Relation requirementrelation : requirementrelations){
+			JSONObject relationJSON = new JSONObject();
 			relationJSON.put("id", requirementrelation.getId());
 			relationJSON.put("rid", requirementrelation.getRequirementId());
 			relationJSON.put("relation_id",requirementrelation.getRelationId());
+			relationsJSON.put(relationJSON);
 		}
 		if (relationsJSON.length() == 0) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		return Response.status(Response.Status.OK).entity(relationsJSON.toString()).build();
-	}
-	
+	}*/
+	/*
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteRelations(@PathParam("requirementId") int requirementId){

@@ -8,7 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import ntut.csie.lab1321.softwareEngineer.dbConnect.DBConnector;
-import ntut.csie.lab1321.softwareEngineer.model.Member;;
+import ntut.csie.lab1321.softwareEngineer.model.Member;
+
 
 public class MemberDAO {
 	private static MemberDAO mInstance;

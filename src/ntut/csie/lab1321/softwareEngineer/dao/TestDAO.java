@@ -23,7 +23,7 @@ public class TestDAO {
 		PreparedStatement pstm = null;
 		try{
 			con =  DBConnector.connectToMySQL();
-			pstm = con.prepareStatement("INSERT INTO test SET name=?, description=?, requirmentid=?, projectid=?");
+			pstm = con.prepareStatement("INSERT INTO test SET name=?, description=?, requirementid=?, projectid=?");
 			pstm.setString(1, test.getTestName());
 			pstm.setString(2, test.getTestDescription());
 			pstm.setInt(3, test.getRequirmentId());
@@ -35,7 +35,9 @@ public class TestDAO {
 			e.printStackTrace();
 		}finally{
 			try{
-				con.close();
+				if (con != null) {
+					con.close();
+				}			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}			
@@ -50,7 +52,7 @@ public class TestDAO {
 		PreparedStatement pstm = null;
 		con = DBConnector.connectToMySQL();
 		try{
-			pstm = con.prepareStatement("UPDATE test SET name=?, description=?, requirmentid=? WHERE id= '" + id + "'" + "AND projectid = '" + projectId + "'");
+			pstm = con.prepareStatement("UPDATE test SET name=?, description=?, requirementid=? WHERE id= '" + id + "'" + "AND projectid = '" + projectId + "'");
 			pstm.setString(1, test.getTestName());
 			pstm.setString(2, test.getTestDescription());
 			pstm.setInt(3, test.getRequirmentId());
@@ -80,7 +82,7 @@ public class TestDAO {
 		try{
 			con = DBConnector.connectToMySQL();
 			stm = con.createStatement();
-			rs = stm.executeQuery("SELECT * FROM test WHERE id =" + "'" + id + "'"+ "'" + "AND projectid =" + "'" + projectId + "'");
+			rs = stm.executeQuery("SELECT * FROM test WHERE id =" + "'" + id + "'" + "AND projectid =" + "'" + projectId + "'");
 			if(rs.next()){
 				test = new Test(id);
 				test.setTestName(rs.getString("name"));

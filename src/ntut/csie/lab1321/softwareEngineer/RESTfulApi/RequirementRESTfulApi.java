@@ -35,7 +35,7 @@ public class RequirementRESTfulApi {
 		requirement = new Requirement(json.getString("name"));
 		requirement.setRequirementDescription(json.getString("description"));
 		requirement.setRequirementStartTime(System.currentTimeMillis());
-		requirement.setmRequirementCommand(json.getString("command"));	
+		requirement.setmRequirementComment(json.getString("comment"));	
 		requirement.setRequirementHadfix(true);
 		requirement.setProjectId(projectId);
 		boolean status = RequirementDAO.getInstance().creatRequirement(requirement, projectId);
@@ -63,11 +63,11 @@ public class RequirementRESTfulApi {
 		for(Requirement requirement : requirements){
 			JSONObject requirementJSON = new JSONObject();
 			requirementJSON.put("id", requirement.getId());
-			System.out.println("id:"+requirement.getId());
+			//System.out.println("id:"+requirement.getId());
 			requirementJSON.put("name", requirement.getRequirementName());
 			requirementJSON.put("description", requirement.getRequirementDescription());
 			requirementJSON.put("status", requirement.getRequirementType());
-			requirementJSON.put("command", requirement.getRequirementCommand());
+			requirementJSON.put("comment", requirement.getRequirementComment());
 			requirementJSON.put("starttime", requirement.getRequirementStartTime());
 			requirementJSON.put("hadfix", requirement.getRequirementHadfix());
 			requirementsJSON.put(requirementJSON);
@@ -91,7 +91,7 @@ public class RequirementRESTfulApi {
 			requirementJSON.put("id", requirement.getId());
 			requirementJSON.put("name", requirement.getRequirementName());
 			requirementJSON.put("description", requirement.getRequirementDescription());
-			requirementJSON.put("command", requirement.getRequirementCommand());
+			requirementJSON.put("comment", requirement.getRequirementComment());
 			requirementJSON.put("star_time", requirement.getRequirementStartTime());
 			requirementJSON.put("hadfix", requirement.getRequirementHadfix());
 			String entity = requirementJSON.toString();		   
@@ -116,7 +116,7 @@ public class RequirementRESTfulApi {
 			JSONObject requirementJSON = new JSONObject(entity);
 			requirement.setRequirementName(requirementJSON.getString("name"));
 			requirement.setRequirementDescription(requirementJSON.getString("description"));
-			requirement.setmRequirementCommand(requirementJSON.getString("command"));
+			requirement.setmRequirementComment(requirementJSON.getString("comment"));
 			requirement.setRequirementType(requirementJSON.getString("Type"));
 			requirement.setRequirementHadfix(requirementJSON.getBoolean("hadfix"));
 			RequirementDAO.getInstance().updateRequirement(requirement, requirementId, requirementJSON.getBoolean("hadfix"), projectId);
