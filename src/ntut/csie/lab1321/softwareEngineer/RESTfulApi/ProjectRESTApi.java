@@ -32,9 +32,11 @@ public class ProjectRESTApi {
 		project.setNote(json.getString("notes"));
 		boolean status = ProjectDAO.getInstance().createProject(project);
 		if(status){
+			project = ProjectDAO.getInstance().getProjectByName(json.getString("name"));
 			JSONObject response = new JSONObject();
 			response.put("message", "Create Project success");
 			response.put("status_code", 3);
+			response.put("id", project.getId());
 			String entityResponse = response.toString();
 			return Response.status(Response.Status.OK).entity(entityResponse).build();
 		}
