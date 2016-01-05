@@ -117,7 +117,7 @@ public class RequirementRESTfulApi {
 			requirement.setRequirementName(requirementJSON.getString("name"));
 			requirement.setRequirementDescription(requirementJSON.getString("description"));
 			requirement.setmRequirementComment(requirementJSON.getString("comment"));
-			requirement.setRequirementType(requirementJSON.getString("Type"));
+			requirement.setRequirementType(requirementJSON.getString("type"));
 			requirement.setRequirementHadfix(requirementJSON.getBoolean("hadfix"));
 			RequirementDAO.getInstance().updateRequirement(requirement, requirementId, requirementJSON.getBoolean("hadfix"), projectId);
 			return Response.status(Response.Status.OK).entity(entity).build();
