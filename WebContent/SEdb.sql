@@ -21,20 +21,20 @@ CREATE TABLE IF NOT EXISTS `member` (
   `project_id` int(11) unsigned NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
   `role` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_member_project` (`project_id`),
-  KEY `FK_member_user` (`user_id`),
-  KEY `FK_member_role` (`role`),
-  CONSTRAINT `FK_member_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_member_role` FOREIGN KEY (`role`) REFERENCES `role` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_member_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `username` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
--- 正在導出表  softwareengineering.member 的資料：~0 rows (大約)
+-- 正在導出表  softwareengineering.member 的資料：~6 rows (大約)
 DELETE FROM `member`;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` (`id`, `project_id`, `user_id`, `role`) VALUES
-	(2, 1, 1, 'admin');
+INSERT INTO `member` (`id`, `project_id`, `user_id`, `role`, `username`) VALUES
+	(8, 3, 2, 'PM', 'mike'),
+	(9, 1, 1, 'Reviewer', 'henry'),
+	(11, 3, 1, 'ST', 'henry'),
+	(12, 4, 1, 'PM', 'henry'),
+	(13, 6, 1, 'PM', 'henry'),
+	(14, 23, 1, 'PM', 'henry');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 
 
@@ -45,18 +45,29 @@ CREATE TABLE IF NOT EXISTS `project` (
   `notes` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
--- 正在導出表  softwareengineering.project 的資料：~6 rows (大約)
+-- 正在導出表  softwareengineering.project 的資料：~17 rows (大約)
 DELETE FROM `project`;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
 INSERT INTO `project` (`id`, `name`, `notes`) VALUES
 	(1, 'ezScrum', NULL),
 	(3, 'project02', 'project02'),
 	(4, 'project03_update', 'project03_note_update'),
-	(6, '252', '123'),
 	(7, 'project07', 'project05_note'),
-	(9, 'project08', 'project05_note');
+	(9, 'project08', 'project05_note'),
+	(11, '123', '321'),
+	(12, '1234', '4321'),
+	(13, '', ''),
+	(14, 'djvhslfh', 'loishdfalofh'),
+	(15, 'testProject', 'testproject_post'),
+	(16, 'dfasdfassg', 'agfdgfdgs'),
+	(17, '124erfetfe', 'refsedfczsd'),
+	(18, '4trq345g', '45t3g534g5'),
+	(19, 'hbhbeg', 'efgvetgv'),
+	(20, 'projectName', 'projectTestNote'),
+	(21, 'qwe', 'qwe'),
+	(22, 'qwew', 'qwe');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 
 
@@ -67,15 +78,29 @@ CREATE TABLE IF NOT EXISTS `requirement` (
   `description` varchar(255) DEFAULT NULL,
   `hadfix` tinyint(1) NOT NULL DEFAULT '0',
   `star_time` bigint(20) NOT NULL,
-  `command` varchar(255) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
   `type` varchar(50) DEFAULT NULL,
   `projectid` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
--- 正在導出表  softwareengineering.requirement 的資料：~0 rows (大約)
+-- 正在導出表  softwareengineering.requirement 的資料：~11 rows (大約)
 DELETE FROM `requirement`;
 /*!40000 ALTER TABLE `requirement` DISABLE KEYS */;
+INSERT INTO `requirement` (`id`, `name`, `description`, `hadfix`, `star_time`, `comment`, `type`, `projectid`) VALUES
+	(3, 'requirement3', 'r1d1', 1, 1451462174788, NULL, NULL, 3),
+	(5, 'requirement5', 'r3d3', 1, 1451462197028, NULL, NULL, 3),
+	(6, 'requirement6', 'test', 0, 1451480192181, 'change comment', 'done', 3),
+	(7, 'requirement7', 'rest03description', 1, 1451484092627, NULL, NULL, 3),
+	(8, 'requirement8', 'rest10description', 1, 1451484539430, NULL, NULL, 3),
+	(9, 'requirement9', '321', 1, 1451485016738, NULL, NULL, 3),
+	(10, 'requirement10', 'description', 1, 1451558097805, NULL, NULL, 3),
+	(11, 'requirement11', 'description', 0, 1451998647439, 'improve', 'ready', 3),
+	(12, 'requirement12', 'description', 0, 1452000048424, 'new', 'do', 3),
+	(13, 'requirement13', 'description is success', 0, 1452000048424, 'good', 'do', 3),
+	(14, 'dfa', 'dasfasf', 1, 1452008668477, NULL, NULL, 3),
+	(15, 'asfdaf', 'rgffgsfdgsd', 1, 1452008714674, NULL, NULL, 1),
+	(16, 'lkhlkn', 'kihglihblihb', 1, 1452045358796, NULL, NULL, 1);
 /*!40000 ALTER TABLE `requirement` ENABLE KEYS */;
 
 
@@ -84,7 +109,6 @@ CREATE TABLE IF NOT EXISTS `requirement_relation` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `rid` int(11) unsigned NOT NULL,
   `relation_id` int(11) unsigned DEFAULT NULL,
-  `relation_test` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_requirement_relation_requirement` (`rid`),
   CONSTRAINT `FK_requirement_relation_requirement` FOREIGN KEY (`rid`) REFERENCES `requirement` (`id`)
@@ -122,14 +146,24 @@ CREATE TABLE IF NOT EXISTS `test` (
   `description` varchar(255) DEFAULT NULL,
   `requirementid` int(11) unsigned NOT NULL,
   `projectid` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK__requirement` (`requirementid`),
-  CONSTRAINT `FK__requirement` FOREIGN KEY (`requirementid`) REFERENCES `requirement` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
--- 正在導出表  softwareengineering.test 的資料：~0 rows (大約)
+-- 正在導出表  softwareengineering.test 的資料：~11 rows (大約)
 DELETE FROM `test`;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
+INSERT INTO `test` (`id`, `name`, `description`, `requirementid`, `projectid`) VALUES
+	(2, 'project02test02', 'test02description', 3, 3),
+	(3, 'project02test03', 'test03description', 3, 3),
+	(4, 'project02test04', 'test04description', 12, 3),
+	(5, 'project02test05', 'test05description', 7, 3),
+	(6, 'project02test06', 'test06description', 8, 3),
+	(7, 'project02test07', 'test07description', 10, 3),
+	(8, 'project02test08', 'test08description', 13, 3),
+	(9, 'project02test09', 'test09description', 5, 3),
+	(10, 'project02test10', 'test10description', 11, 3),
+	(11, 'project02test11', 'test11description', 6, 3),
+	(12, 'project02test12', 'test12description', 9, 3);
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 
 
@@ -141,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`)
-) ENGINE=InnoDB AUTO_INCREMENT=4066 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4067 DEFAULT CHARSET=utf8;
 
 -- 正在導出表  softwareengineering.user 的資料：~12 rows (大約)
 DELETE FROM `user`;
@@ -158,7 +192,8 @@ INSERT INTO `user` (`id`, `account`, `password`, `email`) VALUES
 	(9, 'dddddddd', '1234', 'test@gmail.com'),
 	(10, '555555', '1234', 'test@gmail.com'),
 	(11, 'CutecoolIsBad', '1234', 'cutecool@gmail.com'),
-	(3821, 'MEOW', '5566', 'test@gmail.com');
+	(3821, 'MEOW', '5566', 'test@gmail.com'),
+	(4066, 'wwswss', '', 'ssss');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
